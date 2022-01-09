@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.util
 
 object Constants{
     const val idFragmentFirst : Int = 1

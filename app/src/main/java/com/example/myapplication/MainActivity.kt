@@ -10,9 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.database.CommonDatabase
 import com.example.myapplication.database.room.dao.MemoDao
+import com.example.myapplication.database.room.database.MemoDatabase
 import com.example.myapplication.database.sqlite.helper.MemoDatabaseHelper
 import com.example.myapplication.memo_adapter.MemoListAdapter
 import com.example.myapplication.model.MemoModel
+import com.example.myapplication.util.Constants
 import java.util.*
 
 
@@ -31,9 +33,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), IFragmentCallBac
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        memoDb = MemoDatabase.buildDatabase(applicationContext, Constants.tableName)
+        memoDb = MemoDatabase.buildDatabase(applicationContext, Constants.tableName)
 
-        memoDb = MemoDatabaseHelper(applicationContext)
+//        memoDb = MemoDatabaseHelper(applicationContext)
         memoDb.initDatabase(memoDb)
         // init view
         val buttonAdd = findViewById<Button>(R.id.btn_add)

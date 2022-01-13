@@ -1,6 +1,5 @@
 package com.example.myapplication.database
 
-import android.content.Context
 import com.example.myapplication.model.MemoModel
 
 interface CommonDatabase {

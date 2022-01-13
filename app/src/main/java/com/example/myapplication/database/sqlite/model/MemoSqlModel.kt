@@ -19,7 +19,6 @@ data class MemoSqlModel (
                 content = memoModel.content,
                 createAt = dateConverter.fromDate(memoModel.createAt) ?: 0,
                 updateAt = dateConverter.fromDate(memoModel.updateAt) ?: 0
-
             )
         }
     }

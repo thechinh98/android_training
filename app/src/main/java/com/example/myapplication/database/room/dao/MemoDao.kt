@@ -19,5 +19,4 @@ interface MemoDao {
 
     @Update
     fun update(memo: MemoEntity)
-
 }

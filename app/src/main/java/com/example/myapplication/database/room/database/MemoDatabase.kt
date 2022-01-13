@@ -20,7 +20,6 @@ abstract class MemoDatabase : RoomDatabase(), CommonDatabase {
     abstract fun memoDao(): MemoDao
     private var memoDatabase: MemoDatabase? = null
     override fun initDatabase(commonDatabase: CommonDatabase) {
-//        memoDatabase = buildDatabase(context, Constants.tableName)
         if (commonDatabase is MemoDatabase) {
             memoDatabase = commonDatabase
         }

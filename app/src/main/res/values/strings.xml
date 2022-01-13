@@ -16,4 +16,8 @@
     <string name="heading">ListData</string>
     <string name="loadButtonText">LoadData</string>
     <string name="txt_btn_switch">Switch</string>
+    <string name="txt_hint_edt_title">Input Title</string>
+    <string name="txt_hint_input_content">Input Content</string>
+    <string name="txt_update">Update</string>
+    <string name="txt_delete">Delete</string>
 </resources>

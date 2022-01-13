@@ -9,12 +9,16 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.IFragmentCallBack
 import com.example.myapplication.MainActivity
 import com.example.myapplication.MainViewModel
 import com.example.myapplication.R
 import com.example.myapplication.content_provider.DictionaryProvider
+import com.example.myapplication.model.UserModel
 import com.example.myapplication.util.Constants
+import io.reactivex.rxjava3.subjects.ReplaySubject
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -25,9 +29,12 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
     var nameText: String = ""
     var phoneText: String = ""
     val DictionaryURL = DictionaryProvider.URL
-    val CONTENT_URI = Uri.parse(DictionaryURL)
 
+    var rxContent: ReplaySubject<String>? = null
     private val viewModel: MainViewModel by activityViewModels()
+
+
+    var listUserAdapter = ListUserAdapter()
 
     companion object {
         fun instance1(stringName: String, stringPhone: String): SecondFragment {
@@ -36,34 +43,54 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
             fragment.arguments = bundle
             return fragment
         }
+
+        fun instance2(rxContent: ReplaySubject<String>): SecondFragment {
+            val fragment = SecondFragment()
+            fragment.rxContent = rxContent
+            return fragment
+        }
     }
 
 
     override fun onStart() {
         super.onStart()
-        if(context is MainActivity){
+        if (context is MainActivity) {
             iFragmentCallBack = context as MainActivity
         }
-//        arguments?.let {
-//            val name = arguments?.getString("name")
-//            val phone = arguments?.getString("phone")
-//            nameText= name.toString()
-//            phoneText = phone.toString()
+        val previousInput = view?.findViewById<TextView>(R.id.previousInputText)
+        val editText = view?.findViewById<EditText>(R.id.previousInputEditText)
+        arguments?.let {
+            val name = arguments?.getString("name")
+            val phone = arguments?.getString("phone")
+            nameText = name.toString()
+            phoneText = phone.toString()
+        }
+//
+
+        editText?.setText(nameText)
+        "Previous Input: $nameText - $phoneText".also { previousInput?.text = it }
+
+//        USing share View Model
+//        nameText = viewModel.nameText.value ?: ""
+//        phoneText = viewModel.phoneText.value ?: ""
+
+//        Using Rx
+//        rxContent?.subscribe { fullText ->
+//            previousInput?.text = fullText
 //        }
-        nameText = viewModel.nameText.value ?: ""
-        phoneText = viewModel.phoneText.value ?: ""
-        val textView = view?.findViewById<TextView>(R.id.previousInputText)
+
         val btnSwitch = view?.findViewById<Button>(R.id.btnSwitch)
-        textView?.text = "Previous Input: $nameText - $phoneText"
         btnSwitch?.setOnClickListener {
-            iFragmentCallBack.switchFragment(idFragment, "", "")
+            val text = editText?.text.toString()
+            iFragmentCallBack.switchFragment(idFragment, text, "")
         }
     }
 
     private fun onClickShowDetails(view: View?) {
         // inserting complete table details in this text field
 
-        val resultView = view!!.findViewById<TextView>(R.id.res)
+
+        val listUser: MutableList<UserModel> = mutableListOf()
         // creating a cursor object of the
         // content URI
 
@@ -72,29 +99,24 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
 
         // iteration of the cursor
         // to print whole table
-        cursor.use { cursor ->
-            if (cursor!!.moveToFirst()) {
-                val strBuild = StringBuilder()
-                while (!cursor.isAfterLast) {
-                    strBuild.append(
-                        """
-          
-        ${cursor.getString(cursor.getColumnIndexOrThrow("id"))}-${
-                            cursor.getString(
-                                cursor.getColumnIndexOrThrow(
-                                    "name"
-                                )
-                            )
-                        } -  ${cursor.getString(cursor.getColumnIndexOrThrow("phone"))}
-        """.trimIndent()
+        cursor.use { cursorLoader ->
+            if (cursorLoader!!.moveToFirst()) {
+                while (!cursorLoader.isAfterLast) {
+                    val id = cursorLoader.getString(cursorLoader.getColumnIndexOrThrow("id"))
+                    val name = cursorLoader.getString(
+                        cursorLoader.getColumnIndexOrThrow(
+                            "name"
+                        )
                     )
-                    cursor.moveToNext()
+                    val phone = cursorLoader.getString(cursorLoader.getColumnIndexOrThrow("phone"))
+                    listUser.add(UserModel(id, name, phone))
+                    cursorLoader.moveToNext()
                 }
-                resultView.text = strBuild
             } else {
-                resultView.text = "No Records Found"
+                print("Xin la xin vinh biet")
             }
         }
+        listUserAdapter.addList(listUser)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -103,6 +125,13 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
         buttonLoad.setOnClickListener {
             onClickShowDetails(view)
         }
+        val recyclerView = view.findViewById<RecyclerView>(R.id.listUserRcv)
+        val customLayoutManager = LinearLayoutManager(context)
+        recyclerView.apply {
+            adapter = listUserAdapter
+            layoutManager = customLayoutManager
+        }
+
     }
 
 }

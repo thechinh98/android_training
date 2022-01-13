@@ -30,6 +30,13 @@
             android:textSize="36sp"
             android:textStyle="bold" />
 
+        <EditText
+            android:id="@+id/previousInputEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            />
         <TextView
             android:id="@+id/previousInputText"
             android:layout_width="match_parent"
@@ -53,16 +60,10 @@
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/res"
-            android:layout_width="match_parent"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listUserRcv"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:clickable="false"
-            android:ems="10"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:layout_width="match_parent"/>
 
     </LinearLayout>
 

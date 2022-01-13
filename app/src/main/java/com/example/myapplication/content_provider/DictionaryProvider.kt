@@ -89,8 +89,7 @@ class DictionaryProvider : ContentProvider(){
     }
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
-        var count :Int
-        count = when (uriMatcher!!.match(uri)) {
+        val count = when (uriMatcher!!.match(uri)) {
             uriCode -> db!!.delete(TABLE_NAME, selection, selectionArgs)
             else -> throw IllegalArgumentException("Unknown URI $uri")
         }
@@ -104,8 +103,7 @@ class DictionaryProvider : ContentProvider(){
         selection: String?,
         selectionArgs: Array<out String>?
     ): Int {
-        var count = 0
-        count = when (uriMatcher!!.match(uri)) {
+        val count: Int = when (uriMatcher!!.match(uri)) {
             uriCode -> db!!.update(TABLE_NAME, values, selection, selectionArgs)
             else -> throw IllegalArgumentException("Unknown URI $uri")
         }

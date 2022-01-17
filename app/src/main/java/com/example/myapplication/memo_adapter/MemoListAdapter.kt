@@ -46,9 +46,10 @@ class MemoListAdapter : RecyclerView.Adapter<MemoListAdapter.ViewHolder>() {
     override fun getItemCount(): Int = listMemo.size
 
     fun addMemo(memo: MemoModel){
-        listMemo.add(memo)
-        notifyItemChanged(listMemo.size)
+        listMemo.add(0, memo)
+        notifyItemInserted(0)
     }
+
 
     fun updateListMemo(updateList: MutableList<MemoModel>){
         val oldSize = listMemo.size

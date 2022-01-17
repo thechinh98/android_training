@@ -15,6 +15,7 @@ import com.example.myapplication.database.sqlite.helper.MemoDatabaseHelper
 import com.example.myapplication.memo_adapter.MemoListAdapter
 import com.example.myapplication.model.MemoModel
 import com.example.myapplication.util.Constants
+
 import java.util.*
 
 
@@ -82,15 +83,17 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), IFragmentCallBac
             val title = inputTitle.text.toString()
             val content = inputContent.text.toString()
             val time = getCurrentTime()
-            memoDb.insert(
-                MemoModel(
-                    title = title,
-                    content = content,
-                    createAt = time,
-                    updateAt = time
-                )
+            val memoModel=  MemoModel(
+                title = title,
+                content = content,
+                createAt = time,
+                updateAt = time
             )
-            updateData()
+            val rowId = memoDb.insert(
+               memoModel
+            )
+            memoModel.id = rowId.toInt()
+            memoListAdapter.addMemo(memoModel)
             inputTitle.setText("")
             inputContent.setText("")
         }

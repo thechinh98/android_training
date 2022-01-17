@@ -50,9 +50,9 @@ class MemoDatabaseHelper(context: Context) :
         }
     }
 
-    override fun insert(memoModel: MemoModel) {
+    override fun insert(memoModel: MemoModel): Long {
         // Create a new map of values, where column names are the keys
-        if(memoDatabaseHelper != null) {
+        if (memoDatabaseHelper != null) {
             val values = ContentValues().apply {
                 put(MemoContract.MemoEntry.COLUMN_NAME_TITLE, memoModel.title)
                 put(MemoContract.MemoEntry.COLUMN_NAME_CONTENT, memoModel.content)
@@ -65,8 +65,10 @@ class MemoDatabaseHelper(context: Context) :
                     dateConverter.fromDate(memoModel.updateAt)
                 )
             }
-            memoDb?.insert(MemoContract.MemoEntry.TABLE_NAME, "", values)
+            val rowId = memoDb?.insert(MemoContract.MemoEntry.TABLE_NAME, "", values) ?: 0
+            return rowId
         }
+        return 0
     }
 
     override fun update(memoModel: MemoModel) {

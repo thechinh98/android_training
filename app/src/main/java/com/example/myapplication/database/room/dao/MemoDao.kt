@@ -12,7 +12,7 @@ interface MemoDao {
     fun getAllOrderByUpdateTime() : MutableList<MemoEntity>
 
     @Insert
-    fun insert(memo: MemoEntity)
+    fun insert(memo: MemoEntity) : Long
 
     @Delete
     fun delete(memo: MemoEntity)

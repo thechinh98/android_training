@@ -6,7 +6,7 @@ import com.example.myapplication.util.DateConverter
 import java.util.*
 
 data class MemoModel(
-    val id: Int = 0,
+    var id: Int = 0,
     var title : String = "",
     var content : String = "",
     val createAt: Date?,

@@ -25,10 +25,11 @@ abstract class MemoDatabase : RoomDatabase(), CommonDatabase {
         }
     }
 
-    override fun insert(memoModel: MemoModel) {
+    override fun insert(memoModel: MemoModel) : Long{
         if (memoDatabase != null) {
-            memoDao().insert(MemoEntity.createMemo(memoModel))
+           return  memoDao().insert(MemoEntity.createMemo(memoModel))
         }
+        return -1
     }
 
     override fun update(memoModel: MemoModel) {

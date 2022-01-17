@@ -22,8 +22,16 @@
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textview_second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.stringSecond}"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textview_first"/>
 
         <EditText
             android:id="@+id/edtFirst"
@@ -36,7 +44,7 @@
             android:inputType="text"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textview_first" />
+            app:layout_constraintTop_toBottomOf="@id/textview_second" />
 
         <EditText
             android:id="@+id/edtPhone"
@@ -46,6 +54,7 @@
             android:layout_marginTop="10dp"
             android:autofillHints=""
             android:hint="@string/txt_hint_input_number"
+            android:text="@={viewModel.stringSecond}"
             android:inputType="phone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

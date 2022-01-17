@@ -1,5 +1,7 @@
 package com.example.myapplication
 
+import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -12,8 +14,10 @@ interface IFragmentCallBack {
     fun switchFragment(idFragment: Int, textName: String, textPhone: String)
 }
 class MainActivity : AppCompatActivity(R.layout.activity_main), IFragmentCallBack {
-    override fun onResume() {
-        super.onResume()
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         val fm: FragmentManager = supportFragmentManager
         val ftAdd: FragmentTransaction = fm.beginTransaction()
         ftAdd.add(R.id.frameLayout, FirstFragment())

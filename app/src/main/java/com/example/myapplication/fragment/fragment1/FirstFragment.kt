@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -16,6 +17,7 @@ import com.example.myapplication.MainViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentFirstBinding
 import com.example.myapplication.util.Constants
+import com.example.myapplication.viewmodelFactory.ViewModelFactory
 
 
 class FirstFragment : Fragment(R.layout.fragment_first) {
@@ -25,6 +27,7 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
 
     private lateinit var firstFragmentViewModel: FirstFragmentViewModel
     private var binding: FragmentFirstBinding? = null
+    private var factory: ViewModelFactory = ViewModelFactory()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,8 +38,14 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
             false
         )
         binding?.lifecycleOwner = this
-        firstFragmentViewModel = ViewModelProvider(this).get(FirstFragmentViewModel::class.java)
+        firstFragmentViewModel = ViewModelProvider(this, factory).get(FirstFragmentViewModel::class.java)
         binding?.viewModel = firstFragmentViewModel
+        binding?.edtFirst?.addTextChangedListener { inputValue ->
+            firstFragmentViewModel.changeTextFirst(inputValue)
+        }
+        Log.d("MIICHI", "START")
+        Thread.sleep(10000)
+        Log.d("MIICHI", "START")
         return binding?.root
     }
 
@@ -49,20 +58,4 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        firstFragmentViewModel =
-            ViewModelProvider(this).get(FirstFragmentViewModel::class.java)
-
-    }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        firstFragmentViewModel.stringFirst.observe(viewLifecycleOwner) {
-            Log.d("LOG NE", it)
-        }
-        Log.d("LOG NE", "HELLO")
-    }
 }

@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.MainViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentFirstBinding
@@ -29,24 +31,21 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
     private var binding: FragmentFirstBinding? = null
     private var factory: ViewModelFactory = ViewModelFactory()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_first, container,
-            false
-        )
-        binding?.lifecycleOwner = this
-        firstFragmentViewModel = ViewModelProvider(this, factory).get(FirstFragmentViewModel::class.java)
-        binding?.viewModel = firstFragmentViewModel
-        binding?.edtFirst?.addTextChangedListener { inputValue ->
-            firstFragmentViewModel.changeTextFirst(inputValue)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+        val listRepoAdapter = ListGitRepoAdapter()
+        val listRepoLayoutManager = LinearLayoutManager(context)
+        recyclerView.apply {
+            adapter = listRepoAdapter
+            layoutManager = listRepoLayoutManager
         }
-        Log.d("MIICHI", "START")
-        Thread.sleep(10000)
-        Log.d("MIICHI", "START")
-        return binding?.root
+        firstFragmentViewModel = ViewModelProvider(this, factory).get(FirstFragmentViewModel::class.java)
+        firstFragmentViewModel.getData()
+        firstFragmentViewModel.listGitRepo.observe(viewLifecycleOwner){
+            listRepoAdapter.addData(it)
+        }
+
     }
 
     companion object {
